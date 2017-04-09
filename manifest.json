@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "watched.li improvements",
+  "version": "1.0",
+  "description": "Displays a table with not-yet-watched episodes to watched.li",
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://watched.li/"],
+      "js": ["src/content/improvements.js"]
+    }
+  ]
+}
