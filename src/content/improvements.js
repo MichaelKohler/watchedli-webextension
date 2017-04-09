@@ -11,6 +11,8 @@ const buildList = () => {
 
     console.log(series);
   }
+
+  return series;
 };
 
 const getUnseenEpisodes = (node) => {
@@ -22,7 +24,7 @@ const getUnseenEpisodes = (node) => {
 
     if (unseenLink) {
       const episodeInfo = {
-        title: episode.querySelector('.e-count').innerHTML,
+        number: episode.querySelector('.e-count').innerHTML,
         name: episode.querySelector('.e-title').innerHTML
       };
       episodeInfos.push(episodeInfo);
@@ -39,14 +41,49 @@ const getEpisodesInformation = (node) => {
   };
 };
 
-const createTableRow = (episode) => {
-  return episode;
+const createTableRow = (episode, seriesName) => {
+  const tableRow = document.createElement('tr');
+
+  const seriesCell = document.createElement('td');
+  seriesCell.innerText = seriesName;
+  tableRow.appendChild(seriesCell);
+
+  const numberCell = document.createElement('td');
+  numberCell.innerText = episode.number;
+  tableRow.appendChild(numberCell);
+
+  const nameCell = document.createElement('td');
+  nameCell.innerText = episode.name;
+  tableRow.appendChild(nameCell);
+
+  const linkCell = document.createElement('td');
+  const link = document.createElement('a');
+  link.innerText = 'More info';
+  link.href = 'http://michaelkohler.info';
+  linkCell.appendChild(link);
+  tableRow.appendChild(linkCell);
+
+  return tableRow;
 };
 
 const addTable = (list) => {
-  // TODO
+  const table = document.createElement('table');
+
+  for (const series of list) {
+    const seriesName = series.series;
+    for (const listItem of series.episodes) {
+      const tableRow = createTableRow(listItem, seriesName);
+      table.appendChild(tableRow);
+    }
+  }
+
+  const content = document.querySelector('.info');
+  const title = document.createElement('h2');
+  title.innerText = 'Unseen episodes';
+  content.appendChild(title);
+  content.appendChild(table);
+
 };
 
-console.log('lets start that thing!!');
 const list = buildList();
 addTable(list);

@@ -1,0 +1,11 @@
+.content h2 {
+  margin-top: 50px;
+}
+
+.content table {
+  width: 100%;
+}
+
+.content table tr {
+  height: 30px;
+}
