@@ -58,7 +58,7 @@ const createTableRow = (episode, seriesName) => {
 
   const linkCell = document.createElement('td');
   const link = document.createElement('a');
-  link.innerText = 'More info';
+  link.innerText = 'More info →';
   link.href = 'http://michaelkohler.info';
   linkCell.appendChild(link);
   tableRow.appendChild(linkCell);
@@ -77,12 +77,18 @@ const addTable = (list) => {
     }
   }
 
-  const content = document.querySelector('.info');
-  const title = document.createElement('h2');
-  title.innerText = 'Unseen episodes';
-  content.appendChild(title);
-  content.appendChild(table);
+  const existingSection = document.querySelector('.unseen-episodes');
 
+  if (!existingSection) {
+    const content = document.querySelector('.info');
+    const section = document.createElement('section');
+    section.classList.add('unseen-episodes');
+    const title = document.createElement('h2');
+    title.innerText = 'Unseen episodes';
+    section.appendChild(title);
+    section.appendChild(table);
+    content.appendChild(section);
+  }
 };
 
 const list = buildList();
