@@ -12,5 +12,9 @@
       "js": ["src/content/improvements.js"],
       "css": ["src/content/improvements.css"]
     }
-  ]
+  ],
+  "options_ui": {
+    "page": "src/settings/options.html"
+  },
+  "permissions": ["storage"]
 }

@@ -5,11 +5,8 @@ const buildList = () => {
   if (activeSeriesDOMNodes && activeSeriesDOMNodes.length > 0) {
     activeSeriesDOMNodes.forEach((node) => {
       const seriesInfo = getEpisodesInformation(node);
-      console.log(seriesInfo);
       series.push(seriesInfo);
     });
-
-    console.log(series);
   }
 
   return series;
@@ -41,7 +38,7 @@ const getEpisodesInformation = (node) => {
   };
 };
 
-const createTableRow = (episode, seriesName) => {
+const createTableRow = (episode, seriesName, urlPattern) => {
   const tableRow = document.createElement('tr');
 
   const seriesCell = document.createElement('td');
@@ -59,20 +56,22 @@ const createTableRow = (episode, seriesName) => {
   const linkCell = document.createElement('td');
   const link = document.createElement('a');
   link.innerText = 'More info →';
-  link.href = 'http://michaelkohler.info';
+  const searchTerm = seriesName + ' ' + episode.number;
+  link.href = urlPattern.replace('%S', searchTerm);
+  link.target = '_blank';
   linkCell.appendChild(link);
   tableRow.appendChild(linkCell);
 
   return tableRow;
 };
 
-const addTable = (list) => {
+const addTable = (list, urlPattern) => {
   const table = document.createElement('table');
 
   for (const series of list) {
     const seriesName = series.series;
     for (const listItem of series.episodes) {
-      const tableRow = createTableRow(listItem, seriesName);
+      const tableRow = createTableRow(listItem, seriesName, urlPattern);
       table.appendChild(tableRow);
     }
   }
@@ -91,5 +90,22 @@ const addTable = (list) => {
   }
 };
 
+const readURLPattern = () => {
+  let url = 'https://google.com/?q=%S';
+  const getting = browser.storage.local.get("url");
+
+  return getting.then((config) => {
+    if (config.url) {
+      url = config.url;
+    }
+    return url;
+  }, (err) => {
+    console.log(`Error: ${error}`);
+    return url;
+  });
+};
+
 const list = buildList();
-addTable(list);
+readURLPattern().then((urlPattern) => {
+  addTable(list, urlPattern);
+});
