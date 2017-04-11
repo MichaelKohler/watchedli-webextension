@@ -1,6 +1,13 @@
-.unseen-episodes h2 {
+.unseen-episodes header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   margin-top: 50px;
   margin-bottom: 20px;
+}
+
+.unseen-episodes header button {
+  font-size: 1.2em;
 }
 
 .unseen-episodes table {
