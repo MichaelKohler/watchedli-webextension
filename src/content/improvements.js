@@ -80,12 +80,23 @@ const addTable = (list, urlPattern) => {
 
   if (!existingSection) {
     const content = document.querySelector('.info');
+
     const section = document.createElement('section');
     section.classList.add('unseen-episodes');
+
+    const header = document.createElement('header');
     const title = document.createElement('h2');
     title.innerText = 'Unseen episodes';
-    section.appendChild(title);
+    const shareButton = document.createElement('button');
+    shareButton.id = 'shareButton';
+    shareButton.innerText = 'Copy list to clipboard';
+
+    header.appendChild(title);
+    header.appendChild(shareButton);
+
+    section.appendChild(header);
     section.appendChild(table);
+
     content.appendChild(section);
   }
 };
@@ -105,7 +116,37 @@ const readURLPattern = () => {
   });
 };
 
+const copyList = () => {
+  console.log('clicked, copying ...');
+  const pseudoList = document.querySelector('#pseudo-list');
+  pseudoList.select();
+  document.execCommand('copy');
+};
+
+const attachCopyListener = () => {
+  var copyButton = document.querySelector('#shareButton');
+  copyButton.addEventListener('click', copyList);
+};
+
+const addHiddenCopyableList = (list) => {
+  const episodeListElement = document.createElement('input');
+  epsiodeListElement.id = 'pseudo-list';
+
+  for (const listItem of list) {
+    for (const episode of listItem.episodes) {
+      episodeListElement.value += listItem.series + ' ' + episode.number;
+      listElement.appendChild(episodeListElement);
+    }
+  }
+
+  const content = document.querySelector('.info');
+  content.appendChild(listElement);
+};
+
 const list = buildList();
+
 readURLPattern().then((urlPattern) => {
   addTable(list, urlPattern);
+  attachCopyListener();
+  addHiddenCopyableList(list);
 });
