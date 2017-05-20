@@ -10,9 +10,10 @@ const saveOptions = (e) => {
 }
 
 const restoreOptions = () => {
-  var getting = browser.storage.local.get("url");
-  getting.then((result) => {
-    const restoredValue = result.url || DEFAULT_URL;
+  var getting = browser.storage.local.get({
+    "url": DEFAULT_URL
+  });
+  getting.then(({ url: restoredValue }) => {
     document.querySelector("#url").value = restoredValue;
   }, (err) => {
     console.log(`Error: ${error}`);
