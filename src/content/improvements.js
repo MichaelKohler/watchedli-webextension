@@ -100,7 +100,21 @@ const readURLPattern = () => {
   });
 };
 
+const reRenderTableIfNecessary = (changes) => {
+  const changedItems = Object.keys(changes);
+  if (changedItems.includes('url')) {
+    const newUrlPattern = changes['url'].newValue;
+
+    const content = document.querySelector('.info');
+    const existingSection = document.querySelector('.unseen-episodes');
+    content.removeChild(existingSection);
+    addTable(list, newUrlPattern);
+  }
+};
+
 const list = buildList();
 readURLPattern().then((urlPattern) => {
   addTable(list, urlPattern);
 });
+
+browser.storage.onChanged.addListener(reRenderTableIfNecessary);
