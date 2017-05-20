@@ -92,14 +92,9 @@ const addTable = (list, urlPattern) => {
 
 const readURLPattern = () => {
   let url = 'https://google.com/?q=%S';
-  const getting = browser.storage.local.get("url");
+  const getting = browser.storage.local.get({ url });
 
-  return getting.then((config) => {
-    if (config.url) {
-      url = config.url;
-    }
-    return url;
-  }, (err) => {
+  return getting.then((config) => config.url, (err) => {
     console.log(`Error: ${error}`);
     return url;
   });
