@@ -21,8 +21,8 @@ const getUnseenEpisodes = (node) => {
 
     if (unseenLink) {
       const episodeInfo = {
-        number: episode.querySelector('.e-count').innerHTML,
-        name: episode.querySelector('.e-title').innerHTML
+        number: episode.querySelector('.e-count').textContent,
+        name: episode.querySelector('.e-title').textContent
       };
       episodeInfos.push(episodeInfo);
     }
@@ -33,7 +33,7 @@ const getUnseenEpisodes = (node) => {
 
 const getEpisodesInformation = (node) => {
   return {
-    series: node.querySelector('h2').innerHTML,
+    series: node.querySelector('h2').textContent,
     episodes: getUnseenEpisodes(node)
   };
 };
@@ -57,8 +57,10 @@ const createTableRow = (episode, seriesName, urlPattern) => {
   const link = document.createElement('a');
   link.innerText = 'More info →';
   const searchTerm = seriesName + ' ' + episode.number;
-  link.href = urlPattern.replace('%S', searchTerm);
-  link.target = '_blank';
+  const searchTermEncoded = encodeURIComponent(searchTerm);
+  const fullURL = urlPattern.replace('%S', searchTermEncoded);
+  link.setAttribute('href', fullURL);
+  link.setAttribute('target', '_blank');
   linkCell.appendChild(link);
   tableRow.appendChild(linkCell);
 
